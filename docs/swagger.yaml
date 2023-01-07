@@ -1,0 +1,215 @@
+basePath: /coupon/api
+definitions:
+  models.Coupon:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      quantity:
+        type: integer
+      type:
+        type: string
+    type: object
+  models.CreateNewCouponRequestModel:
+    properties:
+      amount:
+        type: integer
+      id:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    type: object
+  models.Response:
+    properties:
+      code:
+        type: integer
+      errorDescription:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Coupon Api
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Coupon Api
+  version: "1.0"
+paths:
+  /v1/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Coupon By Id
+      operationId: string
+      parameters:
+      - description: coupon Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Coupon'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get Coupon By Id
+      tags:
+      - Coupon Api V1
+  /v1/all:
+    get:
+      consumes:
+      - application/json
+      description: Get All Coupons
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Coupon'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get All Coupons
+      tags:
+      - Coupon Api V1
+  /v1/create:
+    post:
+      consumes:
+      - application/json
+      description: Create New Coupon
+      parameters:
+      - description: 'Create new  coupon request '
+        in: body
+        name: models.CreateNewCouponRequestModel
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateNewCouponRequestModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create New Coupon
+      tags:
+      - Coupon Api V1
+  /v1/give-transaction-pgfunction/{couponId}:
+    post:
+      consumes:
+      - application/json
+      description: Give Coupon To User
+      parameters:
+      - description: coupon Id
+        in: path
+        name: couponId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Give Coupon To User
+      tags:
+      - Coupon Api V1
+  /v1/give-transaction/{couponId}:
+    post:
+      consumes:
+      - application/json
+      description: Give Coupon To User
+      parameters:
+      - description: coupon Id
+        in: path
+        name: couponId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Give Coupon To User
+      tags:
+      - Coupon Api V1
+  /v1/give/{couponId}:
+    post:
+      consumes:
+      - application/json
+      description: Give Coupon To User
+      parameters:
+      - description: coupon Id
+        in: path
+        name: couponId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Give Coupon To User
+      tags:
+      - Coupon Api V1
+schemes:
+- http
+swagger: "2.0"
