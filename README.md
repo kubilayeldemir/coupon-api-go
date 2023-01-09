@@ -1,6 +1,6 @@
-This is a learning project. (SQL, Locks, Transactions)
-It implements a coupon giveaway API that can support concurrent users atomically.
-The use case of this API is a situation where users are waiting for coupons to collect them. What happens if thousands of users try to collect the same limited coupon?
+This is a learning project. (SQL, Locks, Transactions) It implements a coupon giveaway API that can support concurrent users atomically.
+
+The use case of this API is a situation where thousands of users are waiting to collect coupons. What happens if thousands of users try to collect the same limited coupon at the same time?
 
 API has 3 endpoints to give coupons:
 
