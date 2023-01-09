@@ -1,6 +1,18 @@
+This is a learning project. (SQL, Locks, Transactions)
+It implements a coupon giveaway API that can support concurrent users atomically.
+The use case of this API is a situation where users are waiting for coupons to collect them. What happens if thousands of users try to collect the same limited coupon?
+
+API has 3 endpoints to give coupons:
+
+- /give/:couponId: First comes to mind solution. Wrong way.
+
+- /give-transaction/:couponId: Gives coupons with a transaction created with database/sql package.
+
+- give-transaction-pgfunction/:couponId: Gives coupons by calling a PostgreSQL function. Check the "give_coupon_to_user" function below.
+
 Swagger Url: http://localhost:1323/swagger/index.html
 
-For Simple Load Test Suit:
+You can use a simple load tester for testing, i used load-tester:
 
 npm install -g load-tester
 
@@ -20,3 +32,56 @@ Example Test Setup:
     ]
 }
 ````
+
+SQL For Tables:
+
+`````
+create table coupon
+(
+    id       uuid    not null
+        constraint coupon_pk
+            primary key,
+    name     text,
+    type     text    not null,
+    quantity integer not null
+);
+
+create unique index coupon_id_uindex
+    on coupon (id);
+    
+create table coupon_given_events
+(
+    couponid    text    not null,
+    userid      text    not null,
+    newquantity integer not null
+);
+`````
+
+PostgreSQL Function Used By Api(give-transaction-pgfunction):
+`````
+CREATE OR REPLACE FUNCTION give_coupon_to_user(couponId uuid, userId text) RETURNS void AS
+$$
+declare
+    quantity_of_coupon integer;
+begin
+    select quantity
+    into quantity_of_coupon
+    from coupon
+    WHERE id = couponId
+    FOR UPDATE;
+
+    IF quantity_of_coupon >= 1 THEN
+        UPDATE coupon
+        SET quantity = quantity - 1
+        WHERE id = couponId;
+
+        INSERT INTO coupon_given_events(CouponId, UserId, NewQuantity)
+        VALUES (couponId, userId, quantity_of_coupon - 1);
+    ELSE
+        RAISE EXCEPTION 'Coupon run out!';
+    end if;
+
+
+end;
+$$ LANGUAGE plpgsql;
+`````
